@@ -1,0 +1,30 @@
+/* Reset de márgenes y rellenos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Barra de navegación debe estar a lo largo del 100% */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px; /* Espaciado dentro de la barra */
+  background-color: #ffffff; /* Fondo blanco */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  white-space: nowrap; /* Evitar que los elementos se envuelvan */
+}
+
+/* Asegura que los elementos no se rompan */
+header .flex {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px; /* Espaciado entre los elementos */
+}
+
+/* Hacer que el logo y el texto se mantengan pequeños y no afecten el layout */
+header .text-2xl {
+  font-size: 1.5rem; /* Puedes ajustar el tamaño del logo */
+}

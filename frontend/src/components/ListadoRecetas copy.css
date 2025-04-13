@@ -1,0 +1,81 @@
+/* ListadoRecetas.css */
+
+.recetas-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: white;
+    padding: 1rem;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  
+  th, td {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  th {
+    background-color: #f7fafc;
+    color: #4a5568;
+    font-weight: bold;
+  }
+  
+  tr:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .no-recipes {
+    text-align: center;
+    padding: 20px;
+    color: #a0aec0;
+  }
+  
+  .receta-photo {
+    max-width: 50px;
+    height: auto;
+    border-radius: 4px;
+  }
+  
+  /* Estilo para los botones de acción */
+  .action-button {
+    background-color: transparent;
+    border: none;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+  
+  .action-button:hover {
+    color: #4CAF50; /* Cambiar color en hover */
+  }
+  
+  /* Colores específicos para cada acción */
+  .action-button:nth-child(2) {
+    color: #FF9800; /* Color para activar/desactivar */
+  }
+  
+  .action-button:nth-child(2):hover {
+    color: #e68900;
+  }
+  
+  .action-button:nth-child(3) {
+    color: #f44336; /* Color para eliminar */
+  }
+  
+  .action-button:nth-child(3):hover {
+    color: #e53935;
+  }
+  

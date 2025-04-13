@@ -1,0 +1,157 @@
+.recetas-list {
+    padding: 1rem;
+    background-color: #fff;         /* Fondo blanco para la tarjeta */
+    border-radius: 12px;            /* Bordes redondeados */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* Sombra tenue */
+    margin: 1rem auto;              /* Espacio exterior */
+    max-width: 1000px;              /* Máximo ancho para que no se extienda demasiado */
+    box-sizing: border-box;
+    font-size: 0.8rem; /* 👈 Reduce tamaño de letra */
+  }
+  .recetas-list h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* evita romper diseño en pantallas grandes */
+  }
+  th {
+    border: 1px solid #ddd;
+    background-color: #f2f2f2;
+    padding: 8px;
+    font-weight: bold;
+    color: #007bff; /* 👈 Color azul para los textos del encabezado */
+  }
+
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  .receta-photo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  /* Botón base */
+.action-button {
+    margin: 0 4px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+  }
+/* Editar (azul) */
+.edit-button {
+    color: #007bff;
+  }
+  
+  .edit-button:hover {
+    color: #0056b3;
+  }
+  
+  /* Activar/desactivar (amarillo) */
+  .toggle-button {
+    color: #ffc107;
+  }
+  
+  .toggle-button:hover {
+    color: #e0a800;
+  }
+  
+  /* Eliminar (rojo) */
+  .delete-button {
+    color: #dc3545;
+  }
+  
+  .delete-button:hover {
+    color: #a71d2a;
+  }
+  
+  .no-recipes {
+    text-align: center;
+    font-style: italic;
+    padding: 1rem;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  
+ 
+  @media (max-width: 768px) {
+    .recetas-list {
+        padding: 1rem;
+        background-color: #fff;         /* Fondo blanco para la tarjeta */
+        border-radius: 12px;            /* Bordes redondeados */
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);  /* Sombra tenue */
+        margin: 1rem auto;              /* Espacio exterior */
+        max-width: 1000px;              /* Máximo ancho para que no se extienda demasiado */
+        box-sizing: border-box;
+        font-size: 1.2rem; /* 👈 Reduce tamaño de letra */
+      }
+    table,
+    thead,
+    tbody,
+    th,
+    tr {
+      display: block;
+    }
+      
+    thead tr {
+      display: none;
+    }
+  
+    tr {
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1rem;
+      background-color: #fafafa;
+      max-width: 320px;
+    }
+  
+    td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 0;
+        border: none;
+        border-bottom: 1px solid #eee;
+        word-break: break-word;
+        flex-direction: column;
+        max-width: 300px;
+    }
+  
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #007bff; /* 👈 Color azul para los textos del encabezado */
+        /*color: #555;*/
+        margin-bottom: 4px;
+        display: block;
+
+      }
+  
+    .receta-photo {
+      width: 80px;
+      height: 80px;
+    }
+  }
+  

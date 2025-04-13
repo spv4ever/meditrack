@@ -1,0 +1,76 @@
+.user-profile-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    max-width: 1000px;
+    margin: 2rem auto;
+    box-sizing: border-box;
+  }
+  
+  .user-profile-title {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #007bff;
+  }
+  
+  .user-profile-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);;
+    gap: 1rem 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-field {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  
+  .field-label {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+  }
+  
+  .field-value {
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .profile-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .edit-button-user,
+  .test-button-user {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .edit-button-user {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .edit-button-user:hover {
+    background-color: #0056b3;
+  }
+  
+  .test-button-user {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  .test-button-user:hover {
+    background-color: #e0a800;
+  }
+  
