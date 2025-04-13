@@ -1,54 +1,17 @@
 import React, { useState } from 'react';
 import './UserProfile.css';
 import EditarPerfilModal from './EditarPerfilModal';
-import axios from 'axios';
 
 const UserProfile = ({ user, onTestBot }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState(user);
 
-  const handleSave = async (newData) => {
-    try {
-      const token = localStorage.getItem('token');
+  const handleSave = (newData) => {
+    setUserData({ ...userData, ...newData });
+    setIsEditing(false);
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/profile`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al actualizar el perfil');
-      }
-
-      const updatedUser = await response.json();
-      setUserData({ ...userData, ...updatedUser });
-      localStorage.setItem('user', JSON.stringify({ ...userData, ...newData }));
-      setIsEditing(false);
-    } catch (error) {
-      console.error('Error al guardar los datos:', error.message);
-      alert('No se pudieron guardar los datos. Inténtalo de nuevo.');
-    }
-  };
-  const handleTestBotClick = async () => {
-    if (!userData.telegramId) {
-      return alert('Debes conectar tu Telegram primero.');
-    }
-
-    try {
-      await axios.post(`${process.env.REACT_APP_API_URL}/api/users/send-test-message`, {
-        chatId: userData.telegramId,
-        text: '¡Este es un mensaje de prueba desde MediTrack!',
-      });
-      alert('Mensaje de prueba enviado con éxito.');
-    } catch (error) {
-      console.error(error);
-      alert('Error al enviar el mensaje de prueba.');
-    }
+    // TODO: Llamada al backend para guardar los datos si quieres hacerlo persistente
+    // Por ejemplo: axios.put('/api/users/update', newData)
   };
 
   return (
@@ -76,7 +39,7 @@ const UserProfile = ({ user, onTestBot }) => {
 
       <div className="profile-actions">
         <button className="edit-button-user" onClick={() => setIsEditing(true)}>Editar información</button>
-        <button className="test-button-user" onClick={handleTestBotClick}>Probar bot de Telegram</button>
+        <button className="test-button-user" onClick={onTestBot}>Probar bot de Telegram</button>
       </div>
 
       {isEditing && (

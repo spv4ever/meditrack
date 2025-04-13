@@ -59,7 +59,37 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
+// Actualizar datos del perfil del usuario
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const userId = req.user._id; // Lo extraemos del middleware de autenticación
+    const { nombre, apellidos, telegramId } = req.body;
+  
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404);
+      throw new Error('Usuario no encontrado');
+    }
+  
+    // Solo actualizamos los campos permitidos
+    if (nombre !== undefined) user.nombre = nombre;
+    if (apellidos !== undefined) user.apellidos = apellidos;
+    if (telegramId !== undefined) user.telegramId = telegramId;
+  
+    const updatedUser = await user.save();
+  
+    res.json({
+      id: updatedUser._id,
+      email: updatedUser.email,
+      nombre: updatedUser.nombre,
+      apellidos: updatedUser.apellidos,
+      telegramId: updatedUser.telegramId,
+      role: updatedUser.role,
+      token: updatedUser.generateAuthToken(), // Por si quieres refrescar el token
+    });
+  });
+
 module.exports = {
   registerUser,
   loginUser,
+  updateUserProfile,
 };

@@ -105,8 +105,8 @@ const ListadoRecetas = ({ user }) => {
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Mis Recetas</h2>
 
       <div className="button-container">
-        <button className="add-recipe-btn" onClick={() => setIsAdding(true)}>
-          <FaPlusCircle size={24} /> Añadir Receta
+        <button className="add-recipe-btn add-button-user" onClick={() => setIsAdding(true)}>
+          <FaPlusCircle size={18} />Añadir Receta
         </button>
       </div>
 
