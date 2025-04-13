@@ -121,42 +121,48 @@ const ListadoRecetas = ({ user }) => {
           </thead>
           <tbody>
             {recetas.length > 0 ? (
-              recetas.map((receta) => (
+                recetas.map((receta) => (
                 <tr key={receta._id}>
-                  <td>{receta.medicationName}</td>
-                  <td>{receta.dosage}</td>
-                  <td>{receta.frequency}</td>
-                  <td>{receta.intervaloHoras}</td>
-                  <td>{receta.startHour}</td>
-                  <td>{new Date(receta.startDate).toLocaleDateString()}</td>
-                  <td>{receta.endDate ? new Date(receta.endDate).toLocaleDateString() : 'Indefinido'}</td>
-                  <td>{receta.isActive ? 'Activo' : 'Inactivo'}</td>
-                  <td>
+                    <td data-label="Medicamento">{receta.medicationName}</td>
+                    <td data-label="Dosis">{receta.dosage}</td>
+                    <td data-label="Frecuencia">{receta.frequency}</td>
+                    <td data-label="Intervalo">{receta.intervaloHoras}</td>
+                    <td data-label="Hora 1ª Toma">{receta.startHour}</td>
+                    <td data-label="Fecha Inicio">{new Date(receta.startDate).toLocaleDateString()}</td>
+                    <td data-label="Fecha Fin">
+                    {receta.endDate ? new Date(receta.endDate).toLocaleDateString() : 'Indefinido'}
+                    </td>
+                    <td data-label="Estado">{receta.isActive ? 'Activo' : 'Inactivo'}</td>
+                    <td data-label="Foto">
                     {receta.photoUrl ? (
-                      <img src={receta.photoUrl} alt="Receta" className="receta-photo" />
+                        <img src={receta.photoUrl} alt="Receta" className="receta-photo" />
                     ) : (
-                      'No disponible'
+                        'No disponible'
                     )}
-                  </td>
-                  <td>
-                    <button onClick={() => handleEdit(receta._id)} className="action-button">
-                      <FaEdit size={16} />
-                    </button>
-                    <button onClick={() => handleToggleActive(receta._id)} className="action-button">
-                      {receta.isActive ? <FaRegCircle size={16} /> : <FaRegCheckCircle size={16} />}
-                    </button>
-                    <button onClick={() => handleDelete(receta._id)} className="action-button">
-                      <FaRegTrashAlt size={16} />
-                    </button>
-                  </td>
+                    </td>
+                    <td data-label="Acciones">
+                        <div className="button-group">
+                            <button onClick={() => handleEdit(receta._id)} className="action-button edit-button">
+                            <FaEdit size={16} />
+                            </button>
+                            <button onClick={() => handleToggleActive(receta._id)} className="action-button toggle-button">
+                            {receta.isActive ? <FaRegCheckCircle size={16} /> : <FaRegCircle size={16} />}
+                            </button>
+                            <button onClick={() => handleDelete(receta._id)} className="action-button delete-button">
+                            <FaRegTrashAlt size={16} />
+                            </button>
+                        </div>
+                        </td>
+
+
                 </tr>
-              ))
+                ))
             ) : (
-              <tr>
-                <td colSpan="8" className="no-recipes">No tienes recetas registradas.</td>
-              </tr>
+                <tr>
+                <td colSpan="10" className="no-recipes">No tienes recetas registradas.</td>
+                </tr>
             )}
-          </tbody>
+            </tbody>
         </table>
       </div>
       {editingReceta && (

@@ -36,7 +36,7 @@ const prescriptionSchema = new mongoose.Schema({
   },
   startHour: {
     type: String, // formato recomendado: "HH:mm"
-    required: true
+    required: false
   },
   isActive: {
     type: Boolean,

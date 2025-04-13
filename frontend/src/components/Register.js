@@ -20,7 +20,7 @@ const Register = () => {
 
     try {
       // Realiza la petición al backend para registrar al usuario
-      const response = await fetch('http://192.168.1.180:5000/api/auth/register', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

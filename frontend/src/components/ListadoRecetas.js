@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaRegTrashAlt, FaRegCheckCircle, FaRegCircle } from 'react-icons/fa';
+import { FaEdit, FaRegTrashAlt, FaRegCheckCircle, FaRegCircle, FaPlusCircle } from 'react-icons/fa';
 import './ListadoRecetas.css';
 import EditarRecetaModal from './EditarRecetaModal';
+import AñadirRecetaModal from './AñadirRecetaModal'; // Importar el nuevo modal
 
 const ListadoRecetas = ({ user }) => {
   const [recetas, setRecetas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [isAdding, setIsAdding] = useState(false);
+  const [editingReceta, setEditingReceta] = useState(null); // Estado para receta en edición
+// Estado para controlar la apertura del modal de añadir receta
 
   useEffect(() => {
     const fetchRecetas = async () => {
       try {
-        const response = await fetch('http://192.168.1.180:5000/api/prescriptions', {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/prescriptions`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -34,12 +38,11 @@ const ListadoRecetas = ({ user }) => {
 
     fetchRecetas();
   }, []);
-  const [editingReceta, setEditingReceta] = useState(null);
 
   const handleEdit = (id) => {
-  const receta = recetas.find(r => r._id === id);
-  setEditingReceta(receta);
-};
+    const receta = recetas.find(r => r._id === id);
+    setEditingReceta(receta);
+  };
 
   const handleToggleActive = async (id) => {
     try {
@@ -52,7 +55,7 @@ const ListadoRecetas = ({ user }) => {
         )
       );
 
-      const response = await fetch(`http://192.168.1.180:5000/api/prescriptions/${id}/toggle`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/prescriptions/${id}/toggle`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -71,12 +74,11 @@ const ListadoRecetas = ({ user }) => {
   };
 
   const handleDelete = async (id) => {
-    // Confirmación antes de eliminar
     const confirmDelete = window.confirm('¿Estás seguro de que deseas eliminar esta receta?');
-    if (!confirmDelete) return; // Si el usuario cancela, no hacemos nada
+    if (!confirmDelete) return;
 
     try {
-      const response = await fetch(`http://192.168.1.180:5000/api/prescriptions/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/prescriptions/${id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -88,7 +90,6 @@ const ListadoRecetas = ({ user }) => {
         throw new Error('No se pudo eliminar la receta');
       }
 
-      // Actualizamos el estado para eliminar la receta de la interfaz
       setRecetas((prevRecetas) => prevRecetas.filter((receta) => receta._id !== id));
     } catch (err) {
       console.error(err);
@@ -102,6 +103,12 @@ const ListadoRecetas = ({ user }) => {
   return (
     <div className="recetas-list">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Mis Recetas</h2>
+
+      <div className="button-container">
+        <button className="add-recipe-btn" onClick={() => setIsAdding(true)}>
+          <FaPlusCircle size={24} /> Añadir Receta
+        </button>
+      </div>
 
       <div className="table-container">
         <table>
@@ -121,86 +128,96 @@ const ListadoRecetas = ({ user }) => {
           </thead>
           <tbody>
             {recetas.length > 0 ? (
-                recetas.map((receta) => (
+              recetas.map((receta) => (
                 <tr key={receta._id}>
-                    <td data-label="Medicamento">{receta.medicationName}</td>
-                    <td data-label="Dosis">{receta.dosage}</td>
-                    <td data-label="Frecuencia">{receta.frequency}</td>
-                    <td data-label="Intervalo">{receta.intervaloHoras}</td>
-                    <td data-label="Hora 1ª Toma">{receta.startHour}</td>
-                    <td data-label="Fecha Inicio">{new Date(receta.startDate).toLocaleDateString()}</td>
-                    <td data-label="Fecha Fin">
-                    {receta.endDate ? new Date(receta.endDate).toLocaleDateString() : 'Indefinido'}
-                    </td>
-                    <td data-label="Estado">{receta.isActive ? 'Activo' : 'Inactivo'}</td>
-                    <td data-label="Foto">
-                    {receta.photoUrl ? (
-                        <img src={receta.photoUrl} alt="Receta" className="receta-photo" />
-                    ) : (
-                        'No disponible'
-                    )}
-                    </td>
-                    <td data-label="Acciones">
-                        <div className="button-group">
-                            <button onClick={() => handleEdit(receta._id)} className="action-button edit-button">
-                            <FaEdit size={16} />
-                            </button>
-                            <button onClick={() => handleToggleActive(receta._id)} className="action-button toggle-button">
-                            {receta.isActive ? <FaRegCheckCircle size={16} /> : <FaRegCircle size={16} />}
-                            </button>
-                            <button onClick={() => handleDelete(receta._id)} className="action-button delete-button">
-                            <FaRegTrashAlt size={16} />
-                            </button>
-                        </div>
-                        </td>
-
-
+                  <td>{receta.medicationName}</td>
+                  <td>{receta.dosage}</td>
+                  <td>{receta.frequency}</td>
+                  <td>{receta.intervaloHoras}</td>
+                  <td>{receta.startHour}</td>
+                  <td>{new Date(receta.startDate).toLocaleDateString()}</td>
+                  <td>{receta.endDate ? new Date(receta.endDate).toLocaleDateString() : 'Indefinido'}</td>
+                  <td>{receta.isActive ? 'Activo' : 'Inactivo'}</td>
+                  <td>{receta.photoUrl ? <img src={receta.photoUrl} alt="Receta" className="receta-photo" /> : 'No disponible'}</td>
+                  <td>
+                    <div className="button-group">
+                      <button onClick={() => handleEdit(receta._id)} className="action-button edit-button"><FaEdit size={16} /></button>
+                      <button onClick={() => handleToggleActive(receta._id)} className="action-button toggle-button">{receta.isActive ? <FaRegCheckCircle size={16} /> : <FaRegCircle size={16} />}</button>
+                      <button onClick={() => handleDelete(receta._id)} className="action-button delete-button"><FaRegTrashAlt size={16} /></button>
+                    </div>
+                  </td>
                 </tr>
-                ))
+              ))
             ) : (
-                <tr>
+              <tr>
                 <td colSpan="10" className="no-recipes">No tienes recetas registradas.</td>
-                </tr>
+              </tr>
             )}
-            </tbody>
+          </tbody>
         </table>
       </div>
+
+      {/* Modal de añadir receta */}
+      {isAdding && (
+        <AñadirRecetaModal
+          onClose={() => setIsAdding(false)}
+          onSave={async (newReceta) => {
+            try {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/api/prescriptions`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(newReceta),
+              });
+
+              if (!response.ok) throw new Error('Error al añadir la receta');
+
+              const addedReceta = await response.json();
+
+              // Añadir la receta al estado
+              setRecetas((prevRecetas) => [...prevRecetas, addedReceta]);
+
+              setIsAdding(false);  // Cerrar el modal
+            } catch (err) {
+              alert('Error al añadir la receta.');
+            }
+          }}
+        />
+      )}
+
       {editingReceta && (
         <EditarRecetaModal
-            receta={editingReceta}
-            onClose={() => setEditingReceta(null)}
-            onSave={async (updatedData) => {
-                console.log('Datos enviados al backend:', updatedData); // 👈 Añade esto
+          receta={editingReceta}
+          onClose={() => setEditingReceta(null)}
+          onSave={async (updatedData) => {
+            console.log('Datos enviados al backend:', updatedData);
             try {
-                const response = await fetch(`http://192.168.1.180:5000/api/prescriptions/${editingReceta._id}`, {
+              const response = await fetch(`${process.env.REACT_APP_API_URL}/api/prescriptions/${editingReceta._id}`, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify(updatedData),
-                });
+              });
 
-                if (!response.ok) throw new Error('Error al actualizar');
+              if (!response.ok) throw new Error('Error al actualizar');
 
-                const updated = await response.json();
+              const updated = await response.json();
 
-                // Actualiza el estado de recetas
-                setRecetas(prev =>
-                prev.map(r => (r._id === updated._id ? updated : r))
-                );
+              setRecetas(prev => prev.map(r => (r._id === updated._id ? updated : r)));
 
-                setEditingReceta(null);
+              setEditingReceta(null);
             } catch (err) {
-                alert('Error al actualizar la receta.');
+              alert('Error al actualizar la receta.');
             }
-            }}
+          }}
         />
-        )}
-
+      )}
     </div>
   );
-  
 };
 
 export default ListadoRecetas;

@@ -9,7 +9,7 @@ const getPrescriptions = asyncHandler(async (req, res) => {
 
 // Crear una nueva receta
 const createPrescription = asyncHandler(async (req, res) => {
-  const { medicationName, dosage, frequency, startDate, endDate, photoUrl } = req.body;
+  const { medicationName, dosage, frequency, startDate, endDate, photoUrl, startHour, intervaloHoras } = req.body;
 
   if (!medicationName || !dosage || !frequency || !startDate) {
     res.status(400);
@@ -40,6 +40,8 @@ const createPrescription = asyncHandler(async (req, res) => {
     dosage,
     frequency,
     startDate,
+    startHour,
+    intervaloHoras,
     endDate: endDate || null,
     photoUrl
   });
