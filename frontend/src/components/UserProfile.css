@@ -47,7 +47,8 @@
   }
   
   .edit-button-user,
-  .test-button-user {
+  .test-button-user,
+  .config-button-user {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
@@ -73,6 +74,16 @@
   .test-button-user:hover {
     background-color: #e0a800;
   }
+  .config-button-user {
+    background-color: #07ff28;
+    color: #212529;
+  }
+  
+  .config-button-user:hover {
+    background-color: #00e013;
+  }
+
+
   .modal-overlay {
     position: fixed;
     top: 0;

@@ -68,7 +68,7 @@ const Register = () => {
         align="center" // Aseguramos que el texto esté centrado
         sx={{ marginBottom: 2 }} // Espaciado entre la cabecera y el formulario
       >
-        Regístrate gratuitamente en <br /> MediTrack
+        Regístrate gratis en <br /> MediTrack <br /> Cuenta PRO <br />para Versión Alpha
       </Typography>
       <form onSubmit={handleRegister} style={{ width: '100%' }}>
         <TextField

@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './UserProfile.css';
 import EditarPerfilModal from './EditarPerfilModal';
+import ConfigurarBotModal from './ConfigurarBotModal';
 import axios from 'axios';
+
 
 const UserProfile = ({ user, onTestBot }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [userData, setUserData] = useState(user);
+  const [showBotModal, setShowBotModal] = useState(false);
 
   const handleSave = async (newData) => {
     try {
@@ -84,8 +87,9 @@ const UserProfile = ({ user, onTestBot }) => {
       <div className="profile-actions">
         <button className="edit-button-user" onClick={() => setIsEditing(true)}>Editar información</button>
         <button className="test-button-user" onClick={handleTestBotClick}>Probar bot de Telegram</button>
+        <button className="config-button-user" onClick={() => setShowBotModal(true)}>Configurar Bot</button>
       </div>
-
+      {showBotModal && <ConfigurarBotModal onClose={() => setShowBotModal(false)} />}
       {isEditing && (
         <EditarPerfilModal
           userData={userData}
