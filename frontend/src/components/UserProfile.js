@@ -38,11 +38,18 @@ const UserProfile = ({ user, onTestBot }) => {
     if (!userData.telegramId) {
       return alert('Debes conectar tu Telegram primero.');
     }
+    const fullName = `${userData.nombre || 'usuario'} ${userData.apellidos || ''}`.trim();
+
+    const testMessage = `Hola ${fullName} 👋\n\n` +
+      `Este es un mensaje de prueba enviado desde *MediTrack*.\n` +
+      `Si estás leyendo esto, ¡todo funciona correctamente! ✅\n\n` +
+      `Recibirás aquí tus recordatorios de medicación. 💊\n\n` +
+      `Gracias por confiar en nosotros.`;
 
     try {
       await axios.post(`${process.env.REACT_APP_API_URL}/api/users/send-test-message`, {
         chatId: userData.telegramId,
-        text: '¡Este es un mensaje de prueba desde MediTrack!',
+        text: testMessage,
       });
       alert('Mensaje de prueba enviado con éxito.');
     } catch (error) {
