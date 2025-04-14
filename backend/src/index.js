@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const { protect } = require('./middleware/authMiddleware');
 const userRoutes = require('./routes/userRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 // Telegram bot
 const TelegramBot = require('node-telegram-bot-api');
@@ -25,11 +26,15 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
+app.use('/api/payments', paymentRoutes);
+
 
 // Endpoint protegido de prueba
 app.get('/api/protected', protect, (req, res) => {
     res.json({ message: 'Acceso autorizado', user: req.user });
 });
+
+
 
 // Configurar Swagger
 const options = {
@@ -81,7 +86,18 @@ bot.onText(/\/myid/, (msg) => {
     bot.sendMessage(chatId, `Tu ID de Telegram es: ${chatId}`);
 });
 
-/* -------------------------------------------------------------------------- */
+// Middleware de manejo de errores global
+const errorHandler = (err, req, res, next) => {
+    const statusCode = res.statusCode || 500;
+    res.status(statusCode).json({
+      message: err.message,
+      stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+    });
+  };
+  
+  app.use(errorHandler); // Usar el middleware de error después de todas las rutas
+
+/* ---------------------------------------  ------------------------------ */
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {

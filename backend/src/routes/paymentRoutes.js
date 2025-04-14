@@ -5,17 +5,17 @@ const Payment = require('../models/Payment');
 
 // Ruta para registrar un pago
 router.post('/', protect, admin, async (req, res) => {
-  const { user, method, amount, startDate, endDate, transactionId, notes } = req.body;
+  const { userId, method, amount, startDate, endDate, transactionId, notes } = req.body;
 
   // Validación de los campos requeridos
-  if (!user || !method || !amount || !startDate || !endDate) {
+  if (!userId || !method || !amount || !startDate || !endDate) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
   try {
     // Creamos un nuevo registro de pago
     const payment = new Payment({
-      user,
+      userId,
       method,
       amount,
       startDate,

@@ -1,33 +1,56 @@
 const User = require('../models/User');
 const asyncHandler = require('express-async-handler');  // Para manejar errores asíncronos
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../services/sendEmail'); // ✅ importación correcta
 
-// Registrar nuevo usuario
+// 
+
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, password, telegramId, telegramToken } = req.body;
-
-  // Comprobamos si el usuario ya existe
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    res.status(400);
-    throw new Error('El usuario ya existe');
-  }
-
-  // Creamos el nuevo usuario
-  const user = await User.create({ email, password, telegramId, telegramToken });
-
-  if (user) {
-    res.status(201).json({
-      id: user._id,
-      email: user.email,
-      telegramId: user.telegramId,
-      token: user.generateAuthToken(),
-    });
-  } else {
-    res.status(400);
-    throw new Error('No se pudo crear el usuario');
-  }
-});
+    const { email, password, telegramId, telegramToken } = req.body;
+  
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      res.status(400);
+      throw new Error('El usuario ya existe');
+    }
+  
+    const user = await User.create({ email, password, telegramId, telegramToken });
+  
+    if (user) {
+      // ✅ Enviamos el correo de bienvenida
+      const subject = '¡Bienvenido a MediTrack! 🩺';
+      const html = `
+        <h2>Hola 👋</h2>
+        <p>Gracias por registrarte en <strong>MediTrack</strong>.</p>
+        <p>Para recibir notificaciones sobre tus tomas de medicación, sigue estos pasos:</p>
+        <ol>
+          <li>Únete a nuestro canal de Telegram haciendo clic aquí: <a href="https://t.me/tu_canal_bot" target="_blank">t.me/tu_canal_bot</a></li>
+          <li>Abre el bot y pulsa en "Start".</li>
+          <li>Copia tu <strong>Telegram ID</strong> y pégalo en tu perfil de MediTrack.</li>
+          <li>¡Listo! Empezarás a recibir recordatorios.</li>
+        </ol>
+        <p>Si tienes dudas, puedes responder a este correo.</p>
+        <p>Gracias por usar MediTrack 🧠💊</p>
+      `;
+  
+      try {
+        await sendEmail(email, subject, html);
+      } catch (error) {
+        console.error('Error enviando el email de bienvenida:', error.message);
+        // No detenemos el registro si falla el correo
+      }
+  
+      res.status(201).json({
+        id: user._id,
+        email: user.email,
+        telegramId: user.telegramId,
+        token: user.generateAuthToken(),
+      });
+    } else {
+      res.status(400);
+      throw new Error('No se pudo crear el usuario');
+    }
+  });
 
 // Iniciar sesión de usuario
 const loginUser = asyncHandler(async (req, res) => {

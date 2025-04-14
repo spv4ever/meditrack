@@ -28,4 +28,19 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-module.exports = { protect };
+const admin = async (req, res, next) => {
+    const userId = req.user.id;
+  
+    try {
+      const user = await User.findById(userId);
+      if (user.role !== 'admin') {
+        return res.status(403).json({ message: 'Acceso denegado, solo administradores pueden realizar esta acción' });
+      }
+      next();
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Error al verificar el rol del usuario' });
+    }
+  };
+
+module.exports = { protect, admin };
