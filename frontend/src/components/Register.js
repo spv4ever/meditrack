@@ -1,25 +1,56 @@
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // Para la redirección
+import {
+  TextField,
+  Button,
+  Typography,
+  Box,
+  IconButton,
+  InputAdornment
+} from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const navigate = useNavigate(); // Para redirigir al login después del registro
+  const navigate = useNavigate();
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+  const isPasswordValid = passwordRegex.test(password);
+  const doPasswordsMatch = password === confirmPassword;
+
+  const isFormValid = email && isPasswordValid && confirmPassword && doPasswordsMatch;
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccessMessage('');
 
-    // Validación básica
-    if (!email || !password) {
-      setError('Por favor ingresa tu correo y contraseña.');
+    if (!email || !password || !confirmPassword) {
+      setError('Por favor completa todos los campos.');
+      return;
+    }
+
+    if (!isPasswordValid) {
+      setError('La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número.');
+      return;
+    }
+
+    if (!doPasswordsMatch) {
+      setError('Las contraseñas no coinciden.');
       return;
     }
 
     try {
-      // Realiza la petición al backend para registrar al usuario
       const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
@@ -38,15 +69,28 @@ const Register = () => {
       setSuccessMessage('¡Te has registrado exitosamente! Ahora puedes iniciar sesión.');
       setEmail('');
       setPassword('');
-      setError('');
+      setConfirmPassword('');
 
-      // Redirige al usuario a la página de login después de un registro exitoso
       setTimeout(() => {
-        navigate('/login'); // Redirige al login
-      }, 2000); // Espera 2 segundos antes de redirigir para mostrar el mensaje de éxito
+        navigate('/login');
+      }, 2000);
     } catch (err) {
-      setError('Error al intentar registrarse');
+      setError(err.message || 'Error al intentar registrarse');
     }
+  };
+
+  const renderPasswordMatch = () => {
+    if (!confirmPassword) return null;
+    return doPasswordsMatch
+      ? <Typography color="success.main">✅ Contraseña confirmada</Typography>
+      : <Typography color="error">❌ Las contraseñas no coinciden</Typography>;
+  };
+
+  const renderPasswordStrength = () => {
+    if (!password) return null;
+    return isPasswordValid
+      ? <Typography color="success.main">✅ Contraseña segura</Typography>
+      : <Typography color="warning.main">⚠️ Mín. 8 caracteres, mayúscula, minúscula y número</Typography>;
   };
 
   return (
@@ -60,15 +104,11 @@ const Register = () => {
         padding: 2,
         boxShadow: 3,
         borderRadius: 1,
-        marginTop: 8, // Mismo margen superior que el cuadro de login
+        marginTop: 8,
       }}
     >
-      <Typography
-        variant="h4"
-        align="center" // Aseguramos que el texto esté centrado
-        sx={{ marginBottom: 2 }} // Espaciado entre la cabecera y el formulario
-      >
-        Regístrate gratis en <br /> MediTrack <br /> Cuenta PRO <br />para Versión Alpha
+      <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
+        Regístrate gratis en <br /> MediTrack <br /> Cuenta PRO <br /> para Versión Alpha
       </Typography>
       <form onSubmit={handleRegister} style={{ width: '100%' }}>
         <TextField
@@ -83,21 +123,52 @@ const Register = () => {
         <TextField
           fullWidth
           label="Contraseña"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           variant="outlined"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           margin="normal"
           required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={togglePasswordVisibility} edge="end">
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
-        {error && <Typography color="error">{error}</Typography>}
-        {successMessage && <Typography color="primary">{successMessage}</Typography>}
+        {renderPasswordStrength()}
+        <TextField
+          fullWidth
+          label="Confirmar contraseña"
+          type={showConfirmPassword ? 'text' : 'password'}
+          variant="outlined"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          margin="normal"
+          required
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={toggleConfirmPasswordVisibility} edge="end">
+                  {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        {renderPasswordMatch()}
+        {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
+        {successMessage && <Typography color="primary" sx={{ mt: 1 }}>{successMessage}</Typography>}
         <Button
           type="submit"
           fullWidth
           variant="contained"
           color="primary"
           sx={{ marginTop: 2 }}
+          disabled={!isFormValid}
         >
           Registrarse
         </Button>
