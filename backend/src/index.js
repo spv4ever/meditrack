@@ -19,7 +19,23 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+const allowedOrigins = [
+    'https://albertog103.sg-host.com',
+    'http://192.168.1.180:3000'
+  ];
+  
+  app.use(cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('No autorizado por CORS'));
+      }
+    },
+    credentials: true
+  }));
+
+// app.options('*', cors()); // Permite preflight para cualquier ruta
 app.use(express.json());
 
 // Rutas API

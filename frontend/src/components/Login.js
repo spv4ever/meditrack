@@ -102,25 +102,26 @@ const Login = () => {
         </Button>
       </form>
       <Box sx={{ marginTop: 2 }}>
-        <Typography variant="body2" color="text.secondary">
-          ¿No tienes cuenta?{' '}
-          <Link
-            component="button"
-            variant="body2"
-            onClick={handleRegister}
-          >
-            Regístrate
-          </Link>
-        </Typography>
-        <Typography sx={{ mt: 2 }} align="center">
-            ¿Olvidaste tu contraseña?{' '}
-            <span
-                style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
-                onClick={() => navigate('/recuperar-password')}
+      <Typography variant="body2" color="text.secondary">
+            ¿No tienes cuenta?{' '}
+            <Link
+                component="button"
+                onClick={handleRegister}
             >
-                Restablécela aquí
-            </span>
+                Regístrate
+            </Link>
             </Typography>
+
+            <Typography sx={{ mt: 2 }} align="center" variant="body2" color="text.secondary">
+                ¿Olvidaste tu contraseña?{' '}
+                <Link
+                    component="button"
+                    onClick={() => navigate('/recuperar-password')}
+                    sx={{ textDecoration: 'underline', color: '#1976d2' }}
+                >
+                    Restablécela aquí
+                </Link>
+                </Typography>
       </Box>
     </Box>
   );
