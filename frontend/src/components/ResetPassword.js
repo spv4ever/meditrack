@@ -8,10 +8,9 @@ import {
   InputAdornment
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const Register = () => {
-  const [email, setEmail] = useState('');
+const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -19,23 +18,22 @@ const Register = () => {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
+  const { token } = useParams();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-
   const isPasswordValid = passwordRegex.test(password);
   const doPasswordsMatch = password === confirmPassword;
+  const isFormValid = isPasswordValid && confirmPassword && doPasswordsMatch;
 
-  const isFormValid = email && isPasswordValid && confirmPassword && doPasswordsMatch;
-
-  const handleRegister = async (e) => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     setError('');
     setSuccessMessage('');
 
-    if (!email || !password || !confirmPassword) {
+    if (!password || !confirmPassword) {
       setError('Por favor completa todos los campos.');
       return;
     }
@@ -51,31 +49,25 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/reset-password/${token}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ password }),
+          });
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.message || 'Error al registrarse');
+        setError(data.message || 'Error al restablecer la contraseña');
         return;
       }
 
-      setSuccessMessage('¡Te has registrado exitosamente! Ahora puedes iniciar sesión.');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      setSuccessMessage('✅ ¡Contraseña restablecida correctamente! Redirigiendo...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
-      setError(err.message || 'Error al intentar registrarse');
+      setError(err.message || 'Error en el servidor');
     }
   };
 
@@ -107,22 +99,13 @@ const Register = () => {
         marginTop: 8,
       }}
     >
-      <Typography variant="h4" align="center" sx={{ marginBottom: 2 }}>
-        Regístrate gratis en <br /> MediTrack <br /> Cuenta PRO <br /> para Versión Alpha
+      <Typography variant="h5" align="center" sx={{ marginBottom: 2 }}>
+        Restablecer contraseña
       </Typography>
-      <form onSubmit={handleRegister} style={{ width: '100%' }}>
+      <form onSubmit={handleResetPassword} style={{ width: '100%' }}>
         <TextField
           fullWidth
-          label="Correo electrónico"
-          variant="outlined"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          margin="normal"
-          required
-        />
-        <TextField
-          fullWidth
-          label="Contraseña"
+          label="Nueva contraseña"
           type={showPassword ? 'text' : 'password'}
           variant="outlined"
           value={password}
@@ -140,9 +123,10 @@ const Register = () => {
           }}
         />
         {renderPasswordStrength()}
+
         <TextField
           fullWidth
-          label="Confirmar contraseña"
+          label="Confirmar nueva contraseña"
           type={showConfirmPassword ? 'text' : 'password'}
           variant="outlined"
           value={confirmPassword}
@@ -162,6 +146,7 @@ const Register = () => {
         {renderPasswordMatch()}
         {error && <Typography color="error" sx={{ mt: 1 }}>{error}</Typography>}
         {successMessage && <Typography color="primary" sx={{ mt: 1 }}>{successMessage}</Typography>}
+
         <Button
           type="submit"
           fullWidth
@@ -170,20 +155,11 @@ const Register = () => {
           sx={{ marginTop: 2 }}
           disabled={!isFormValid}
         >
-          Registrarse
+          Cambiar contraseña
         </Button>
-        </form>
-      <Typography sx={{ mt: 2 }} align="center">
-        ¿Ya tienes una cuenta?{' '}
-        <span
-          style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
-          onClick={() => navigate('/login')}
-        >
-          Inicia sesión aquí
-        </span>
-      </Typography>
+      </form>
     </Box>
   );
 };
 
-export default Register;
+export default ResetPassword;

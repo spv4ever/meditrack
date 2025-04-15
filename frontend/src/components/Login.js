@@ -112,6 +112,15 @@ const Login = () => {
             Regístrate
           </Link>
         </Typography>
+        <Typography sx={{ mt: 2 }} align="center">
+            ¿Olvidaste tu contraseña?{' '}
+            <span
+                style={{ color: '#1976d2', cursor: 'pointer', textDecoration: 'underline' }}
+                onClick={() => navigate('/recuperar-password')}
+            >
+                Restablécela aquí
+            </span>
+            </Typography>
       </Box>
     </Box>
   );
