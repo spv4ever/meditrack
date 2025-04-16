@@ -47,31 +47,30 @@ const enviarRecordatorio = async () => {
     //     console.log(`👤 Usuario de la receta ${p.medicationName}:`, p.user);
     //   });
   
-    const horaActual = moment().tz('Europe/Madrid').format('HH:mm'); //moment().format('HH:mm');
+    const horaActual = moment().tz('Europe/Madrid').format('HH:mm');
     console.log(`🕒 Hora actual: ${horaActual}`);
-  
+
     prescriptions.forEach(async pres => {
-        if (!pres.user?.telegramId) {
-          console.log(`⚠️ Usuario sin telegramId, saltando: ${pres.user?.telegramId}`);
-          return;
-        }
-      
-        if (!pres.startHour) {
-          console.log(`⚠️ Receta sin hora de inicio (startHour), saltando: ${pres.medicationName}`);
-          return;
-        }
-      
-        const times = calcularTomasDiarias(pres.startHour, pres.intervaloHoras, pres.frequency);
-        console.log(`📋 Horarios para ${pres.medicationName} (${pres.user.telegramId}): ${times.join(', ')}`);
-      
-        const horaActual = moment().format('HH:mm');
-        if (times.includes(horaActual)) {
-          console.log(`✅ Enviando recordatorio a ${pres.user.telegramId}`);
-          await sendMessageToTelegram(pres.user.telegramId, `¡Es hora de tomar tu medicamento: ${pres.medicationName}!`);
-        } else {
-          console.log(`❌ No coincide la hora actual con los horarios para ${pres.medicationName}`);
-        }
-      });
+    if (!pres.user?.telegramId) {
+        console.log(`⚠️ Usuario sin telegramId, saltando: ${pres.user?.telegramId}`);
+        return;
+    }
+
+    if (!pres.startHour) {
+        console.log(`⚠️ Receta sin hora de inicio (startHour), saltando: ${pres.medicationName}`);
+        return;
+    }
+
+    const times = calcularTomasDiarias(pres.startHour, pres.intervaloHoras, pres.frequency);
+    console.log(`📋 Horarios para ${pres.medicationName} (${pres.user.telegramId}): ${times.join(', ')}`);
+
+    if (times.includes(horaActual)) {
+        console.log(`✅ Enviando recordatorio a ${pres.user.telegramId}`);
+        await sendMessageToTelegram(pres.user.telegramId, `¡Es hora de tomar tu medicamento: ${pres.medicationName}!`);
+    } else {
+        console.log(`❌ No coincide la hora actual con los horarios para ${pres.medicationName}`);
+    }
+    });
       
   };
 
