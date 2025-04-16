@@ -7,7 +7,7 @@ const { protect } = require('./middleware/authMiddleware');
 const userRoutes = require('./routes/userRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
-const MedicationLog = require('../models/MedicationLog'); // Asegúrate de tener la ruta correcta
+const MedicationLog = require('./models/MedicationLog'); // Asegúrate de tener la ruta correcta
 
 
 // Telegram bot
