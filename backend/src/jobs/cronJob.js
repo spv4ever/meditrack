@@ -15,7 +15,8 @@ const cron = require('node-cron');
 const Prescription = require('../models/Prescription');
 const User = require('../models/User');
 const TelegramBot = require('node-telegram-bot-api');
-const moment = require('moment');
+//const moment = require('moment');
+const moment = require('moment-timezone');
 
 require('dotenv').config();
 
@@ -28,7 +29,7 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN);
 function calcularTomasDiarias(startHour, intervalo, frequency) {
   const horas = [];
   const [startH, startM] = startHour.split(':').map(Number);
-  const start = moment().set({ hour: startH, minute: startM, second: 0, millisecond: 0 });
+  const start = moment.tz({ hour: startH, minute: startM, second: 0 }, 'Europe/Madrid');//moment().set({ hour: startH, minute: startM, second: 0, millisecond: 0 });
 
   for (let i = 0; i < frequency; i++) {
     horas.push(start.clone().add(i * intervalo, 'hours').format('HH:mm'));
@@ -46,7 +47,7 @@ const enviarRecordatorio = async () => {
     //     console.log(`👤 Usuario de la receta ${p.medicationName}:`, p.user);
     //   });
   
-    const horaActual = moment().format('HH:mm');
+    const horaActual = moment().tz('Europe/Madrid').format('HH:mm'); //moment().format('HH:mm');
     console.log(`🕒 Hora actual: ${horaActual}`);
   
     prescriptions.forEach(async pres => {
