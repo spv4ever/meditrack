@@ -86,9 +86,10 @@ const bot = new TelegramBot(TELEGRAM_BOT_TOKEN);
 bot.setWebHook(`${BASE_URL}/api/telegram/webhook`);
 
 app.post('/api/telegram/webhook', (req, res) => {
-    bot.processUpdate(req.body); // Esto procesa automáticamente lo recibido
+    const update = req.body;
+    bot.processUpdate(update); // Esto envía la actualización al bot (para que llegue a los handlers)
     res.sendStatus(200);
-});
+  });
 
 // Manejo de comandos
 bot.onText(/\/start/, async (msg) => {
@@ -103,6 +104,18 @@ bot.onText(/\/myid/, (msg) => {
     bot.sendMessage(chatId, `Tu ID de Telegram es: ${chatId}`);
 });
 
+bot.on('callback_query', async (callbackQuery) => {
+    const { data, from } = callbackQuery;
+    console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
+  
+    await bot.answerCallbackQuery(callbackQuery.id, {
+      text: '✅ Toma confirmada',
+      show_alert: false
+    });
+  
+    await bot.sendMessage(callbackQuery.from.id, '💊 Gracias por confirmar la toma de tu medicación.');
+  });
+
 // Middleware de manejo de errores global
 const errorHandler = (err, req, res, next) => {
     const statusCode = res.statusCode || 500;
@@ -114,11 +127,7 @@ const errorHandler = (err, req, res, next) => {
   
   app.use(errorHandler); // Usar el middleware de error después de todas las rutas
 
-  app.post('/api/telegram/webhook', (req, res) => {
-    const update = req.body;
-    bot.processUpdate(update); // Esto envía la actualización al bot (para que llegue a los handlers)
-    res.sendStatus(200);
-  });
+
 /* ---------------------------------------  ------------------------------ */
 require('./jobs/cronJob'); 
 

@@ -44,19 +44,19 @@ const handleUpdate = (update) => {
 // Establecer el handler para las actualizaciones
 bot.on('message', handleUpdate);
 
-bot.on('callback_query', async (callbackQuery) => {
-    const { data, from, message } = callbackQuery;
+// bot.on('callback_query', async (callbackQuery) => {
+//     const { data, from, message } = callbackQuery;
   
-    console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
+//     console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
   
-    // Opcional: Responder a Telegram para cerrar el loader del botón
-    await bot.answerCallbackQuery(callbackQuery.id, {
-      text: '✅ Toma confirmada',
-      show_alert: false // Puedes poner true si quieres que sea una ventana emergente
-    });
+//     // Opcional: Responder a Telegram para cerrar el loader del botón
+//     await bot.answerCallbackQuery(callbackQuery.id, {
+//       text: '✅ Toma confirmada',
+//       show_alert: false // Puedes poner true si quieres que sea una ventana emergente
+//     });
   
-    // Opcional: Enviar un mensaje de confirmación al usuario
-    await bot.sendMessage(callbackQuery.from.id, 'Gracias por confirmar la toma de tu medicación.');
-  });
+//     // Opcional: Enviar un mensaje de confirmación al usuario
+//     await bot.sendMessage(callbackQuery.from.id, 'Gracias por confirmar la toma de tu medicación.');
+//   });
 
 module.exports = sendMessageToTelegram;
