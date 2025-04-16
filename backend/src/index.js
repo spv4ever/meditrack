@@ -104,34 +104,17 @@ bot.onText(/\/myid/, (msg) => {
     bot.sendMessage(chatId, `Tu ID de Telegram es: ${chatId}`);
 });
 
+// Manejo de botones
 bot.on('callback_query', async (callbackQuery) => {
     const { data, from } = callbackQuery;
+    console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
   
-    let medData;
-    try {
-      medData = JSON.parse(data); // { action, med, dose, hour }
+    await bot.answerCallbackQuery(callbackQuery.id, {
+      text: '✅ Toma confirmada',
+      show_alert: false
+    });
   
-      if (medData.action !== 'confirm') throw new Error('Acción inválida');
-  
-      await bot.answerCallbackQuery(callbackQuery.id, {
-        text: '✅ Toma confirmada',
-        show_alert: false
-      });
-  
-      const confirmationMsg = `✅ Has confirmado la toma de tu medicación.\n\n` +
-        `💊 *Medicamento:* ${medData.med}\n` +
-        `🧪 *Dosis:* ${medData.dose}\n` +
-        `⏰ *Hora programada:* ${medData.hour}\n\n`;
-  
-      await bot.sendMessage(from.id, confirmationMsg, { parse_mode: 'Markdown' });
-  
-      // Aquí puedes emitir un log temporal
-      console.log(`✔️ Usuario ${from.username || from.first_name} confirmó toma de ${medData.med} a las ${medData.hour}`);
-  
-    } catch (err) {
-      console.error("❌ Error al procesar callback_data:", err);
-      await bot.sendMessage(from.id, "⚠️ Ocurrió un error al confirmar la toma.");
-    }
+    await bot.sendMessage(callbackQuery.from.id, '💊 Gracias por confirmar la toma de tu medicación.');
   });
 
 // Middleware de manejo de errores global

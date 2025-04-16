@@ -75,19 +75,13 @@ const enviarRecordatorio = async () => {
 
         ✅ Cuando lo hayas hecho, pulsa el botón de abajo.
         `;
-
-        const callbackData = JSON.stringify({
-            action: 'confirm',
-            med: pres.medicationName,
-            dose: pres.dosage,
-            hour: horaActual
-          });
+        
 
         const opciones = {
         parse_mode: 'Markdown',
         reply_markup: {
             inline_keyboard: [
-            [{ text: '✅ Confirmar toma', callback_data: callbackData }]
+            [{ text: '✅ Confirmar toma', callback_data: `confirm_${pres._id}` }]
             ]
         }
         };
