@@ -17,12 +17,13 @@ const User = require('../models/User');
 const TelegramBot = require('node-telegram-bot-api');
 //const moment = require('moment');
 const moment = require('moment-timezone');
+const MedicationLog = require('../models/MedicationLog'); // Asegúrate de tener la ruta correcta
 
 require('dotenv').config();
 
 console.log('✅ cronJob.js cargado');
 
-const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN);
+//const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN);
 
 
 
@@ -43,6 +44,7 @@ const enviarRecordatorio = async () => {
     
     const prescriptions = await Prescription.find({ isActive: true }).populate('user');
     console.log(`🧾 Prescripciones activas encontradas: ${prescriptions.length}`);
+
     // prescriptions.forEach(p => {
     //     console.log(`👤 Usuario de la receta ${p.medicationName}:`, p.user);
     //   });
@@ -64,7 +66,19 @@ const enviarRecordatorio = async () => {
     const times = calcularTomasDiarias(pres.startHour, pres.intervaloHoras, pres.frequency);
     console.log(`📋 Horarios para ${pres.medicationName} (${pres.user.telegramId}): ${times.join(', ')}`);
 
-    const mensaje = `
+    
+    if (times.includes(horaActual)) {
+        console.log(`✅ Enviando recordatorio a ${pres.user.telegramId}`);
+        // Crear un registro en la base de datos de la toma
+        const log = new MedicationLog({
+            user: pres.user._id,
+            prescription: pres._id,
+            scheduledTime: moment(`${horaActual}:00`, 'HH:mm:ss').toDate(), // Hora de la toma
+        });
+
+        await log.save();
+
+        const mensaje = `
         💊 *Recordatorio de medicación*
 
         Hola *${pres.user.nombre}*, es hora de tomar tu tratamiento:
@@ -81,13 +95,12 @@ const enviarRecordatorio = async () => {
         parse_mode: 'Markdown',
         reply_markup: {
             inline_keyboard: [
-            [{ text: '✅ Confirmar toma', callback_data: `confirm_${pres._id}` }]
+            [{ text: '✅ Confirmar toma', callback_data: `confirm_${log._id}` }]
             ]
         }
         };
 
-    if (times.includes(horaActual)) {
-        console.log(`✅ Enviando recordatorio a ${pres.user.telegramId}`);
+
         await sendMessageToTelegram(pres.user.telegramId, mensaje,opciones);
     } else {
         console.log(`❌ No coincide la hora actual con los horarios para ${pres.medicationName}`);

@@ -104,18 +104,48 @@ bot.onText(/\/myid/, (msg) => {
     bot.sendMessage(chatId, `Tu ID de Telegram es: ${chatId}`);
 });
 
-// Manejo de botones
+// // Manejo de botones
+// bot.on('callback_query', async (callbackQuery) => {
+//     const { data, from , } = callbackQuery;
+//     console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
+  
+//     await bot.answerCallbackQuery(callbackQuery.id, {
+//       text: '✅ Toma confirmada',
+//       show_alert: false
+//     });
+  
+//     await bot.sendMessage(callbackQuery.from.id, '✅ ¡Genial! Hemos registrado tu toma. ¡Sigue así! 💪');
+//   });
+
 bot.on('callback_query', async (callbackQuery) => {
-    const { data, from } = callbackQuery;
-    console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
-  
-    await bot.answerCallbackQuery(callbackQuery.id, {
-      text: '✅ Toma confirmada',
-      show_alert: false
-    });
-  
-    await bot.sendMessage(callbackQuery.from.id, '💊 Gracias por confirmar la toma de tu medicación.');
-  });
+    const { data, from, message } = callbackQuery;
+
+    if (data.startsWith('confirm_')) {
+        const logId = data.split('_')[1]; // Extraemos el ID del log
+
+        // Buscar el log usando el ID que está en el callback_data
+        const log = await MedicationLog.findById(logId);
+
+        if (log) {
+            // Actualizar el log con la hora exacta de confirmación
+            log.status = 'confirmed';
+            log.confirmedAt = new Date(); // Hora de confirmación
+            await log.save();
+
+            // Responder al usuario para cerrar el loader del botón
+            await bot.answerCallbackQuery(callbackQuery.id, {
+                text: '✅ Toma confirmada',
+                show_alert: false
+            });
+
+            // Enviar un mensaje confirmando la toma
+            await bot.sendMessage(from.id, `Gracias por confirmar la toma de tu medicamento ${log.prescription.medicationName} a las ${moment(log.confirmedAt).format('HH:mm')}.`);
+        } else {
+            console.log('⚠️ Log no encontrado o ya confirmado');
+        }
+    }
+});
+
 
 // Middleware de manejo de errores global
 const errorHandler = (err, req, res, next) => {
