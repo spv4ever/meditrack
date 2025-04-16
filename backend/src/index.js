@@ -38,7 +38,7 @@ const allowedOrigins = [
     credentials: true
   }));
 
-// app.options('*', cors()); // Permite preflight para cualquier ruta
+//app.options('*', cors()); // Permite preflight para cualquier ruta
 app.use(express.json());
 
 // Rutas API
