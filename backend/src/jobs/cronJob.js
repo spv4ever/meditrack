@@ -64,9 +64,30 @@ const enviarRecordatorio = async () => {
     const times = calcularTomasDiarias(pres.startHour, pres.intervaloHoras, pres.frequency);
     console.log(`📋 Horarios para ${pres.medicationName} (${pres.user.telegramId}): ${times.join(', ')}`);
 
+    const mensaje = `
+        💊 *Recordatorio de medicación*
+
+        Hola *${pres.user.nombre}*, es hora de tomar tu tratamiento:
+
+        • Medicamento: *${pres.medicationName}*  
+        • Dosis: *${pres.dosage}*  
+        • Hora de toma: *${horaActual}*
+
+        ✅ Cuando lo hayas hecho, pulsa el botón de abajo.
+        `;
+
+        const opciones = {
+        parse_mode: 'Markdown',
+        reply_markup: {
+            inline_keyboard: [
+            [{ text: '✅ Confirmar toma', callback_data: `confirm_${pres._id}` }]
+            ]
+        }
+        };
+
     if (times.includes(horaActual)) {
         console.log(`✅ Enviando recordatorio a ${pres.user.telegramId}`);
-        await sendMessageToTelegram(pres.user.telegramId, `¡Es hora de tomar tu medicamento: ${pres.medicationName}!`);
+        await sendMessageToTelegram(pres.user.telegramId, mensaje,opciones);
     } else {
         console.log(`❌ No coincide la hora actual con los horarios para ${pres.medicationName}`);
     }

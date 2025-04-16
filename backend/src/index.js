@@ -114,6 +114,11 @@ const errorHandler = (err, req, res, next) => {
   
   app.use(errorHandler); // Usar el middleware de error después de todas las rutas
 
+  app.post('/api/telegram/webhook', (req, res) => {
+    const update = req.body;
+    bot.processUpdate(update); // Esto envía la actualización al bot (para que llegue a los handlers)
+    res.sendStatus(200);
+  });
 /* ---------------------------------------  ------------------------------ */
 require('./jobs/cronJob'); 
 

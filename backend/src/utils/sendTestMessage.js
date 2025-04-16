@@ -12,19 +12,21 @@ const webhookURL = `${process.env.BASE_URL}/api/telegram/webhook`; // Este es el
 bot.setWebHook(webhookURL); // Establecer el webhook para tu bot
 
 // Función para enviar mensajes a Telegram usando axios
-const sendMessageToTelegram = async (chatId, message) => {
-  const url = `${TELEGRAM_API_URL}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-  try {
-    const response = await axios.post(url, {
-      chat_id: chatId,
-      text: message
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error al enviar mensaje a Telegram:", error);
-    throw new Error("No se pudo enviar el mensaje a Telegram");
-  }
-};
+const sendMessageToTelegram = async (chatId, message, options = {}) => {
+    const url = `${TELEGRAM_API_URL}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+    try {
+      const response = await axios.post(url, {
+        chat_id: chatId,
+        text: message,
+        parse_mode: 'Markdown', // Esto permite el formato en negrita, etc.
+        ...options // Aquí se incluyen reply_markup y otros parámetros si los hay
+      });
+      return response.data;
+    } catch (error) {
+      console.error("❌ Error al enviar mensaje a Telegram:", error.response?.data || error.message);
+      throw new Error("No se pudo enviar el mensaje a Telegram");
+    }
+  };
 
 // Aquí manejas las respuestas automáticas cuando Telegram envíe una actualización a tu webhook
 const handleUpdate = (update) => {
@@ -41,5 +43,20 @@ const handleUpdate = (update) => {
 
 // Establecer el handler para las actualizaciones
 bot.on('message', handleUpdate);
+
+bot.on('callback_query', async (callbackQuery) => {
+    const { data, from, message } = callbackQuery;
+  
+    console.log(`📥 Callback recibido de ${from.username || from.first_name}: ${data}`);
+  
+    // Opcional: Responder a Telegram para cerrar el loader del botón
+    await bot.answerCallbackQuery(callbackQuery.id, {
+      text: '✅ Toma confirmada',
+      show_alert: false // Puedes poner true si quieres que sea una ventana emergente
+    });
+  
+    // Opcional: Enviar un mensaje de confirmación al usuario
+    await bot.sendMessage(callbackQuery.from.id, 'Gracias por confirmar la toma de tu medicación.');
+  });
 
 module.exports = sendMessageToTelegram;
