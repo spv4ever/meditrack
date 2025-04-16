@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 
+
 // Telegram bot
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -114,8 +115,11 @@ const errorHandler = (err, req, res, next) => {
   app.use(errorHandler); // Usar el middleware de error después de todas las rutas
 
 /* ---------------------------------------  ------------------------------ */
+require('./jobs/cronJob'); 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
 });
+
+
