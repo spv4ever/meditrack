@@ -121,8 +121,7 @@ bot.on('callback_query', async (callbackQuery) => {
       const confirmationMsg = `✅ Has confirmado la toma de tu medicación.\n\n` +
         `💊 *Medicamento:* ${medData.med}\n` +
         `🧪 *Dosis:* ${medData.dose}\n` +
-        `⏰ *Hora programada:* ${medData.hour}\n\n` +
-        `¡Gracias por llevar un control responsable de tu salud con *MediTrack*! 🌱`;
+        `⏰ *Hora programada:* ${medData.hour}\n\n`;
   
       await bot.sendMessage(from.id, confirmationMsg, { parse_mode: 'Markdown' });
   
