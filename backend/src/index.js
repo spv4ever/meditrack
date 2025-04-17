@@ -7,8 +7,10 @@ const { protect } = require('./middleware/authMiddleware');
 const userRoutes = require('./routes/userRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
-const MedicationLog = require('./models/MedicationLog'); // Asegúrate de tener la ruta correcta
+const medicationLogRoutes = require('./routes/medicationLogRoutes');
+
 const moment = require('moment-timezone');
+
 
 
 // Telegram bot
@@ -24,7 +26,8 @@ connectDB();
 const app = express();
 const allowedOrigins = [
     'https://albertog103.sg-host.com',
-    'http://192.168.1.180:3000'
+    'http://192.168.1.180:3000',
+    'http://localhost:3000',
   ];
   
   app.use(cors({
@@ -46,6 +49,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api', medicationLogRoutes);
 
 
 // Endpoint protegido de prueba

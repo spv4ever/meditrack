@@ -4,6 +4,7 @@ import Navbar from './Navbar'; // Asegúrate de que la ruta sea la correcta
 import './Dashboard.css'; // Asegúrate de importar el archivo CSS
 import ListadoRecetas from './ListadoRecetas';  // Asegúrate de tener la ruta correcta
 import UserProfile from './UserProfile';
+import ListadoLogs from './ListadoLogs';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -43,6 +44,7 @@ const Dashboard = () => {
             onTestBot={() => console.log('Probar bot de Telegram')} 
         />
         <ListadoRecetas user={user} />
+        <ListadoLogs user={user} />
       </div>
     </div>
   );
