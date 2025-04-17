@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const medicationLogRoutes = require('./routes/medicationLogRoutes');
+const MedicationLog = require('./models/MedicationLog'); // Ajusta la ruta según corresponda
 
 const moment = require('moment-timezone');
 
