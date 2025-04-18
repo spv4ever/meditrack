@@ -110,8 +110,12 @@ const enviarRecordatorio = async () => {
       
   };
 
+  module.exports = {
+    enviarRecordatorio,
+};
+
 // Cronjob para enviar recordatorios cada minuto (ajusta la frecuencia según tus necesidades)
-cron.schedule('* * * * *', enviarRecordatorio);
+//cron.schedule('* * * * *', enviarRecordatorio);
 
 
 

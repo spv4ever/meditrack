@@ -9,6 +9,7 @@ const prescriptionRoutes = require('./routes/prescriptionRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const medicationLogRoutes = require('./routes/medicationLogRoutes');
 const MedicationLog = require('./models/MedicationLog'); // Ajusta la ruta según corresponda
+const cronRoutes = require('./routes/cronRoutes'); // o como se llame tu archivo
 
 const moment = require('moment-timezone');
 
@@ -51,6 +52,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', medicationLogRoutes);
+app.use('/cron', cronRoutes);
 
 
 // Endpoint protegido de prueba
