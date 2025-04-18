@@ -10,6 +10,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const medicationLogRoutes = require('./routes/medicationLogRoutes');
 const MedicationLog = require('./models/MedicationLog'); // Ajusta la ruta según corresponda
 const cronRoutes = require('./routes/cronRoutes'); // o como se llame tu archivo
+const adminRoutes = require('./routes/adminRoutes');
 
 const moment = require('moment-timezone');
 
@@ -43,7 +44,8 @@ const allowedOrigins = [
     credentials: true
   }));
 
-//app.options('*', cors()); // Permite preflight para cualquier ruta
+//app.options('/*', cors());
+  // Permite preflight para cualquier ruta
 app.use(express.json());
 
 // Rutas API
@@ -53,6 +55,7 @@ app.use('/api/prescriptions', prescriptionRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', medicationLogRoutes);
 app.use('/cron', cronRoutes);
+app.use('/admin', adminRoutes);
 
 
 // Endpoint protegido de prueba
@@ -73,7 +76,7 @@ const options = {
         },
         servers: [
             {
-                url: `http://192.168.1.180:${process.env.PORT || 5000}`,
+                url: `http://localhost:${process.env.PORT || 5000}`,
                 description: 'Servidor local',
             },
         ],

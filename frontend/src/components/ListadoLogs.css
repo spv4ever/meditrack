@@ -15,9 +15,22 @@
   }
   
   .table-container {
-    overflow-x: auto;
+    max-height: 600px; /* altura fija del contenedor */
+    overflow-y: auto; /* scroll vertical */
+    overflow-x: auto; /* mantiene tu scroll horizontal existente */
+    border: 1px solid #e2e8f0; /* opcional para delimitar visualmente */
+    border-radius: 8px;
   }
   
+  .table-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .table-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
