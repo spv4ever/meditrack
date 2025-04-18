@@ -28,4 +28,4 @@ jobs:
 
     # Paso 4: Ejecutar el cron job (aquí llamamos el script que ejecuta el cron job)
     - name: Run cron job
-      run: node path/to/your/cronJob.js  # Ajusta la ruta de tu archivo cronJob.js
+      run: node backend/jobs/cronJob.js  # Ajusta la ruta de tu archivo cronJob.js
