@@ -1,31 +1,18 @@
-name: Run Cron Job
+name: Ejecutar Cron Job en el backend
 
-# Programar la ejecución del cron job
 on:
   schedule:
-    - cron: '*/1 * * * *'  # Ejecutar cada minuto (ajustable según necesites)
-  workflow_dispatch:  # Permite ejecutar el cron manualmente desde la interfaz de GitHub
-    # Puedes agregar manualmente otros eventos de ejecución si los necesitas
+    - cron: '*/1 * * * *'  # Ejecutar cada 5 minutos (ajustable según tus necesidades)
+  workflow_dispatch:
 
 jobs:
-  cron-job:
-    runs-on: ubuntu-latest  # Puedes elegir otro entorno si lo deseas
+  run-cron-job:
+    runs-on: ubuntu-latest
 
     steps:
-    # Paso 1: Hacer checkout del código
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # Paso 2: Configurar Node.js (ajusta la versión de Node según tu proyecto)
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # Usa la versión de Node.js que uses en tu proyecto
-
-    # Paso 3: Instalar las dependencias necesarias
-    - name: Install dependencies
-      run: npm install
-
-    # Paso 4: Ejecutar el cron job (aquí llamamos el script que ejecuta el cron job)
-    - name: Run cron job
-      run: node backend/scr/jobs/cronJob.js  # Ajusta la ruta de tu archivo cronJob.js
+    - name: Hacer solicitud GET al backend para ejecutar el cron
+      run: |
+        curl -X GET "https://meditrack-2vkl.onrender.com/cron/ejecutar-cron?token=${{ secrets.CRON_JOB_SECRET }}"
