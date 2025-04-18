@@ -146,7 +146,7 @@ bot.on('callback_query', async (callbackQuery) => {
             });
 
             // Enviar un mensaje confirmando la toma
-            await bot.sendMessage(from.id, `Gracias por confirmar la toma de tu medicamento ${log.prescription.medicationName} a las ${moment(log.confirmedAt).format('HH:mm')}.`);
+            await bot.sendMessage(from.id, `Gracias por confirmar la toma de tu medicamento ${log.prescription.medicationName} a las ${moment(log.confirmedAt).tz('Europe/Madrid').format('HH:mm')}.`);
         } else {
             console.log('⚠️ Log no encontrado o ya confirmado');
         }

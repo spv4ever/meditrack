@@ -73,7 +73,8 @@ const enviarRecordatorio = async () => {
         const log = new MedicationLog({
             user: pres.user._id,
             prescription: pres._id,
-            scheduledTime: moment(`${horaActual}:00`, 'HH:mm:ss').toDate(), // Hora de la toma
+            //scheduledTime: moment(`${horaActual}:00`, 'HH:mm:ss').toDate(), // Hora de la toma
+            scheduledTime: moment.tz('Europe/Madrid').toDate(), // ⏰ Momento actual en GMT+2
         });
 
         await log.save();
