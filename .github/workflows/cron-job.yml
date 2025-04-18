@@ -1,0 +1,31 @@
+name: Run Cron Job
+
+# Programar la ejecución del cron job
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # Ejecutar cada minuto (ajustable según necesites)
+  workflow_dispatch:  # Permite ejecutar el cron manualmente desde la interfaz de GitHub
+    # Puedes agregar manualmente otros eventos de ejecución si los necesitas
+
+jobs:
+  cron-job:
+    runs-on: ubuntu-latest  # Puedes elegir otro entorno si lo deseas
+
+    steps:
+    # Paso 1: Hacer checkout del código
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Paso 2: Configurar Node.js (ajusta la versión de Node según tu proyecto)
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # Usa la versión de Node.js que uses en tu proyecto
+
+    # Paso 3: Instalar las dependencias necesarias
+    - name: Install dependencies
+      run: npm install
+
+    # Paso 4: Ejecutar el cron job (aquí llamamos el script que ejecuta el cron job)
+    - name: Run cron job
+      run: node path/to/your/cronJob.js  # Ajusta la ruta de tu archivo cronJob.js
