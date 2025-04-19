@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { FaEdit, FaRegTrashAlt, FaRegCheckCircle, FaRegCircle, FaPlusCircle } from 'react-icons/fa';
+import { FaEdit, FaRegTrashAlt, FaRegCheckCircle, FaRegCircle, FaPlusCircle, FaPrint } from 'react-icons/fa';
 import './ListadoRecetas.css';
 import EditarRecetaModal from './EditarRecetaModal';
 import AñadirRecetaModal from './AñadirRecetaModal'; // Importar el nuevo modal
+
+import { exportRecetasToPDF} from '../utils/exports';
+
 
 const ListadoRecetas = ({ user }) => {
   const [recetas, setRecetas] = useState([]);
@@ -107,6 +110,9 @@ const ListadoRecetas = ({ user }) => {
       <div className="button-container">
         <button className="add-recipe-btn add-button-user" onClick={() => setIsAdding(true)}>
           <FaPlusCircle size={18} />Añadir Receta
+        </button>
+        <button className="add-recipe-btn add-button-user" onClick={() => exportRecetasToPDF(user, recetas)}>
+        <FaPrint size={18} />Exportar a PDF
         </button>
       </div>
 

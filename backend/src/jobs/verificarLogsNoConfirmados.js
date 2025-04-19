@@ -7,7 +7,7 @@ const sendMessageToTelegram = require('../utils/sendTestMessage');
 
 const verificarLogsNoConfirmados = async () => {
   const ahora = new Date();
-  const hace30Min = new Date(ahora.getTime() - 30 * 60 * 1000);
+  const hace30Min = new Date(ahora.getTime() - 5 * 60 * 1000);
 
   try {
     const logs = await MedicationLog.find({
@@ -65,6 +65,6 @@ const verificarLogsNoConfirmados = async () => {
 };
 
 // Cada 5 minutos
-setInterval(verificarLogsNoConfirmados, 5 * 60 * 1000);
+setInterval(verificarLogsNoConfirmados, 60 * 60 * 1000);
 
 module.exports = verificarLogsNoConfirmados;

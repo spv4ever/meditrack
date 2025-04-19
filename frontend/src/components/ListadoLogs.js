@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { exportLogsToPDF } from '../utils/exports';
+
 import './ListadoLogs.css';
 
 const ListadoLogs = () => {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [usuario, setUsuario] = useState(null);
+
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     const userId = storedUser?.id;
     const token = storedUser?.token;
+    setUsuario(storedUser); // Aquí lo guardas completo
 
     if (!userId || !token) {
       setError('No se encontró el ID del usuario o el token.');
@@ -61,7 +66,9 @@ const ListadoLogs = () => {
   return (
     <div className="logs-list">
       <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">Historial de Medicación</h2>
-
+      <div className="button-container">
+        <button className="add-recipe-btn add-button-user" onClick={() => exportLogsToPDF(usuario, logs)}>Exportar PDF</button>
+      </div>
       <div className="table-container">
         <table>
           <thead>
@@ -70,6 +77,7 @@ const ListadoLogs = () => {
               <th>Hora Programada</th>
               <th>Estado</th>
               <th>Confirmado a las</th>
+              <th>Avisado Contacto</th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +92,13 @@ const ListadoLogs = () => {
                       ? formatDateTime(log.confirmedAt)
                       : '—'}
                   </td>
+                  <td>
+                    {log.status === 'confirmed'
+                        ? '—'
+                        : log.wasNotified === true
+                        ? 'Avisado'
+                        : 'Pendiente'}
+                    </td>
                 </tr>
               ))
             ) : (
