@@ -103,10 +103,31 @@ const updatePrescription = async (req, res) => {
     }
   };
 
+// Controlador para subir una foto
+const uploadPhoto = async (req, res) => {
+  try {
+    const prescriptionId = req.params.id;
+    const photoUrl = req.file.path; // Asegúrate de que multer lo haya cargado correctamente
+
+    // Actualiza la receta con la URL de la foto
+    const updated = await Prescription.findByIdAndUpdate(
+      prescriptionId,
+      { photoUrl },
+      { new: true }
+    );
+
+    res.json(updated); // Retorna la receta actualizada
+  } catch (error) {
+    console.error("Error al subir la foto:", error);
+    res.status(500).json({ message: "Error al subir la foto" });
+  }
+};
+
 module.exports = {
   getPrescriptions,
   createPrescription,
   togglePrescription,
   deletePrescription,
-  updatePrescription
+  updatePrescription,
+  uploadPhoto
 };

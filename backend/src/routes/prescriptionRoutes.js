@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const Prescription = require("../models/Prescription");
+const { uploadPhoto: multerUploadPhoto } = require("../middleware/multerMiddleware");
+const upload = require("../utils/multer");
 const {
   getPrescriptions,
   createPrescription,
   togglePrescription,
   deletePrescription,
-  updatePrescription
+  updatePrescription,
+  uploadPhoto
 } = require('../controllers/prescriptionController');
 const { protect } = require('../middleware/authMiddleware');
 const verifyPrescriptionLimit = require('../middleware/verifyPrescriptionLimit');
@@ -24,5 +28,8 @@ router.route('/:id')
 router.post('/', protect, verifyPrescriptionLimit, createPrescription);
 
 router.patch('/:id', protect, updatePrescription);
+
+// Subir foto para una receta existente
+router.put("/photo/:id", multerUploadPhoto, uploadPhoto); // Usamos el controlador para manejar la subida
 
 module.exports = router;
