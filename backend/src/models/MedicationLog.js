@@ -5,6 +5,7 @@ const medicationLogSchema = new mongoose.Schema({
   prescription: { type: mongoose.Schema.Types.ObjectId, ref: 'Prescription', required: true },
   scheduledTime: { type: Date, required: true },
   status: { type: String, enum: ['pending', 'confirmed'], default: 'pending' },
+  wasNotified: { type: Boolean, default: false },
   confirmedAt: { type: Date },
 }, { timestamps: true });
 

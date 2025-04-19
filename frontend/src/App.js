@@ -10,6 +10,8 @@ import PerfilPage from './components/PerfilPage';
 import MedicacionPage from './components/MedicacionPage';
 import LogsPage from './components/LogsPage';
 import UserSummaryCard from './components/UserSummaryCard';
+import ListadoContactos from './components/ListadoContactos';
+
 
 function App() {
   return (
@@ -28,6 +30,7 @@ function App() {
           <Route path="medicacion" element={<MedicacionPage />} />
           <Route path="logs" element={<LogsPage />} />
           <Route path="/dashboard/admin/usuarios" element={<UserSummaryCard />} />
+          <Route path="contactos" element={<ListadoContactos />} />
         </Route>
 
       </Routes>

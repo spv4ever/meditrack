@@ -11,6 +11,7 @@ const medicationLogRoutes = require('./routes/medicationLogRoutes');
 const MedicationLog = require('./models/MedicationLog'); // Ajusta la ruta según corresponda
 const cronRoutes = require('./routes/cronRoutes'); // o como se llame tu archivo
 const adminRoutes = require('./routes/adminRoutes');
+const contactRoutes = require("./routes/contactRoutes");
 
 const moment = require('moment-timezone');
 
@@ -56,6 +57,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api', medicationLogRoutes);
 app.use('/cron', cronRoutes);
 app.use('/admin', adminRoutes);
+app.use("/api/contacts", contactRoutes);
 
 
 // Endpoint protegido de prueba
@@ -173,6 +175,7 @@ const errorHandler = (err, req, res, next) => {
 
 /* ---------------------------------------  ------------------------------ */
 require('./jobs/cronJob'); 
+require('./jobs/verificarLogsNoConfirmados'); // Esto arranca el setInterval
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {

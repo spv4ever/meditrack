@@ -1,6 +1,6 @@
 .page-container {
     padding: 2rem;
-    background-color: #f7f7f7;
+    background-color: #f7f7f7 !important;
     min-height: calc(100vh - 60px); /* Ajusta según altura del Navbar */
     margin-top: 20px; /* Agrega un margen superior para separar más el contenido */
     text-align: center

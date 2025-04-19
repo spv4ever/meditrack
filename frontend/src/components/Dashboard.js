@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
+//import ListadoContactos from '../components/ListadoContactos';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -41,7 +42,11 @@ const Dashboard = () => {
           onClick: () => navigate('admin/usuarios')
         });
       }
-
+    cardList.push({
+    title: 'Gestión de contactos',
+    description: 'Añade y gestiona los contactos de control para avisos de toma de medicación',
+    onClick: () => navigate('contactos') // Esto podría ser una página dedicada si lo deseas
+    });
   if (!user) return <div>Loading...</div>;
 
   return (

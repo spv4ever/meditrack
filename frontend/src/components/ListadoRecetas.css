@@ -12,7 +12,8 @@
     margin-top: 0;
     margin-bottom: 1.5rem;
   }
-  .table-container {
+
+   .table-container {
     overflow-x: auto;
   }
   
@@ -98,6 +99,7 @@
     display: flex;
     justify-content: flex-end; /* alinea el contenido a la derecha */
     margin-top: 1rem; /* opcional, para dar espacio hacia arriba */
+    margin-bottom: 1rem;
   }
   
   .add-button-user{

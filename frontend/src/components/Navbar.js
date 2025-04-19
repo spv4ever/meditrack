@@ -64,6 +64,14 @@ const Navbar = ({ user, onLogout }) => {
                 >
                   Historial de Tomas
                 </Link>
+                <Link
+                  to="/dashboard/contactos"
+                  className="navbar-dropdown-item"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contactos
+                </Link>
+                
               </div>
             )}
           </div>
