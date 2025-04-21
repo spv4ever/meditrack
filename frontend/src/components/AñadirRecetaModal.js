@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './EditarRecetaModal.css'; // reutilizando estilos del modal de edición
+import './AñadirRecetaModal.css'; // reutilizando estilos del modal de edición
 
 const AñadirRecetaModal = ({ onClose, onSave }) => {
   const [formData, setFormData] = useState({
@@ -59,77 +59,83 @@ const AñadirRecetaModal = ({ onClose, onSave }) => {
       <div className="modal-content">
         <h2>Añadir nueva receta</h2>
         <form onSubmit={handleSubmit}>
-          <label>
-            Medicamento:
+          <div className="three-columns">
             <input
               type="text"
               name="medicationName"
+              placeholder='Medicamento'
               value={formData.medicationName}
               onChange={handleChange}
               required
             />
-          </label>
-          <label>
-            Dosis:
-            <input
+            </div>
+            <div className="three-columns">
+            <input 
               type="text"
               name="dosage"
+              placeholder='Dosis'
               value={formData.dosage}
               onChange={handleChange}
               required
-            />
-          </label>
-          <label>
-            Frecuencia (veces al día):
-            <input
-              type="number"
-              name="frequency"
-              value={formData.frequency}
-              onChange={handleChange}
-              min="1"
-              required
-            />
-          </label>
-          <label>
-            Intervalo (horas):
-            <input
-              type="number"
-              name="intervaloHoras"
-              value={formData.intervaloHoras}
-              onChange={handleChange}
-              disabled
-              required
-            />
-          </label>
-          <label>
-            Hora primera toma:
-            <input
-              type="time"
-              name="startHour"
-              value={formData.startHour}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Fecha inicio:
-            <input
-              type="date"
-              name="startDate"
-              value={formData.startDate}
-              onChange={handleChange}
-              required
-            />
-          </label>
-          <label>
-            Fecha fin:
-            <input
-              type="date"
-              name="endDate"
-              value={formData.endDate}
-              onChange={handleChange}
-            />
-          </label>
+            /></div>
+          <div className="three-columns">
+            <label>
+              Tomas al día:
+              <input
+                type="number"
+                name="frequency"
+                value={formData.frequency}
+                onChange={handleChange}
+                min="1"
+                required
+              />
+            </label>
+          
+            <label>
+              Cada x horas:
+              <input
+                type="number"
+                name="intervaloHoras"
+                value={formData.intervaloHoras}
+                onChange={handleChange}
+                disabled
+                required
+              />
+            </label>
+          
+            <label>
+              Hora primera toma:
+              <input
+                type="time"
+                name="startHour"
+                value={formData.startHour}
+                onChange={handleChange}
+                required
+              />
+            </label>
+          </div>
+          <div className="three-columns">
+            <label>
+              Fecha inicio:
+              <input
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              Fecha fin:
+              <input
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+          <div className="three-columns">
           <label>
             Foto URL:
             <input
@@ -138,7 +144,7 @@ const AñadirRecetaModal = ({ onClose, onSave }) => {
               value={formData.photoUrl}
               onChange={handleChange}
             />
-          </label>
+          </label></div>
 
           {error && <p className="error">{error}</p>}
 

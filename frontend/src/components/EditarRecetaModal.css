@@ -2,8 +2,8 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 95%;
+    height: 80%;
     background: rgba(0,0,0,0.5);
     display: flex;
     justify-content: center;
@@ -33,3 +33,16 @@
     margin-top: 1rem;
   }
   
+  /* Ajustes responsivos para pantallas pequeñas */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 80%;
+    padding: 15px 10px;
+  }
+
+  .modal-close {
+    top: 5px;
+    right: 10px;
+    font-size: 1.2rem;
+  }
+}

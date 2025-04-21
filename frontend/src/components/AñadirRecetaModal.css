@@ -1,0 +1,175 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0px; /* Para no pegar el modal a los bordes en móvil */
+}
+
+/* Contenedor del contenido */
+.modal-content {
+  background-color: #fff;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Agrega esto a tu archivo CSS */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Ajusta este valor para controlar el espacio entre elementos */
+  /*padding-right: 20px;*/
+}
+
+form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Espacio entre el texto del label y el input */
+  margin-bottom: 0; /* Elimina el margen inferior predeterminado */
+  
+}
+
+
+form input:not([type="submit"]):not([type="button"]):not([type="text"]) {
+  padding: 8px;
+  margin: 0; /* Elimina márgenes predeterminados */
+}
+
+/* Clase para filas horizontales */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Espacio entre elementos en la misma fila */
+}
+
+/* Estilo para labels en filas horizontales */
+.form-row label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Contenedor para los 3 elementos */
+.three-columns {
+  display: flex;
+  justify-content: space-between; /* Distribuye el espacio entre elementos */
+  gap: 15px; /* Espacio entre columnas */
+  margin-bottom: 12px; /* Espacio debajo del grupo */
+  width: 100%;
+}
+
+/* Cada columna ocupará igual espacio */
+.three-columns > * {
+  flex: 1; /* Hace que todos los elementos crezcan igual */
+  min-width: 0; /* Permite que se ajusten correctamente */
+}
+
+/* Ajustes para los inputs */
+.three-columns input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Ajuste específico para input time en algunos navegadores */
+.three-columns input[type="time"] {
+  -webkit-appearance: none; /* Elimina estilos específicos de Safari/Chrome */
+  appearance: none;
+  height: 36px; /* Igual altura que otros inputs (ajusta según necesites) */
+}
+
+
+  /* Estilos del formulario */
+  .modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .modal-content label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .modal-content input {
+    padding: 0px;
+    font-size: 1rem;
+    margin-top: 0px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Botones del modal */
+  .modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .modal-buttons button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #1976d2;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-buttons button[type="button"] {
+    background-color: #888;
+  }
+  
+  .modal-buttons button:hover {
+    background-color: #115293;
+  }
+  
+  .modal-buttons button[type="button"]:hover {
+    background-color: #555;
+  }
+  
+  /* Mensaje de error */
+  .error {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  /* ✅ Responsive para pantallas pequeñas */
+  @media (max-width: 480px) {
+    h2 {
+      padding-top: 80px;
+    }
+    input{
+      margin: 0px;
+    }
+    .modal-content {
+      padding: 15px 10px;
+      border-radius: 6px;
+    }
+  
+    .modal-buttons {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .modal-buttons button {
+      width: 100%;
+    }
+  }
+  

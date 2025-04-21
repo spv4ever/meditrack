@@ -118,6 +118,12 @@ bot.onText(/\/myid/, (msg) => {
     bot.sendMessage(chatId, `Tu ID de Telegram es: ${chatId}`);
 });
 
+bot.onText(/\/azucar/, (msg) => {
+  const chatId = msg.chat.id;
+  //bot.sendMessage(chatId, `Tu ID de Telegram es: ${chatId}`);
+  console.log(msg)
+});
+
 // // Manejo de botones
 // bot.on('callback_query', async (callbackQuery) => {
 //     const { data, from , } = callbackQuery;
