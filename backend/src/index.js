@@ -30,6 +30,7 @@ connectDB();
 const app = express();
 const allowedOrigins = [
     'https://albertog103.sg-host.com',
+    'https://meditrack.es',
     'http://192.168.1.180:3000',
     'http://localhost:3000',
   ];
